@@ -1,28 +1,64 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container grid-xs py-2">
+      <form @submit.prevent="addTodo(todo)">
+        <div class="input-group">
+          <input
+            type="text"
+            v-model="todo.description"
+            class="form-input"
+            placeholder="New Todo"
+          />
+          <button class="btn btn-primary input-group-btn">Add</button>
+        </div>
+      </form>
+      <div class="todo-list">
+        <Todo
+          v-for="todo in todos"
+          :key="todo.id"
+          @done="doneTodo"
+          :todo="todo"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Todo from "./components/Todo";
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  components: { Todo },
+  data() {
+    return {
+      todos: [],
+      todo: {
+        checked: false,
+      },
+    };
+  },
+  methods: {
+    addTodo(todo) {
+      todo.id = Date.now();
+      this.todos.push(todo);
+      this.todo = {
+        checked: false,
+      };
+    },
+
+    doneTodo(todo) {
+      const index = this.todos.findIndex(item => item.id === todo.id);
+      if (index >= 0) {
+        const checked = !this.todos[index].checked
+        this.$set(this.todos, index, {...this.todos[index], checked})
+      }
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.todo-list {
+  padding-top: 2rem;
 }
 </style>
