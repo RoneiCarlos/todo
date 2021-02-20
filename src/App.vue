@@ -17,6 +17,7 @@
           v-for="todo in todos"
           :key="todo.id"
           @done="doneTodo"
+          @remove="removeTodo"
           :todo="todo"
         />
       </div>
@@ -47,10 +48,17 @@ export default {
     },
 
     doneTodo(todo) {
-      const index = this.todos.findIndex(item => item.id === todo.id);
+      const index = this.todos.findIndex((item) => item.id === todo.id);
       if (index >= 0) {
-        const checked = !this.todos[index].checked
-        this.$set(this.todos, index, {...this.todos[index], checked})
+        const checked = !this.todos[index].checked;
+        this.$set(this.todos, index, { ...this.todos[index], checked });
+      }
+    },
+
+    removeTodo(todo) {
+      const index = this.todos.findIndex((item) => item.id === todo.id);
+      if (index >= 0) {
+        this.$delete(this.todos, index)
       }
     },
   },

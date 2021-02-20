@@ -11,7 +11,7 @@
         <span v-if="todo.checked">Undone</span>
         <span v-else>Done</span>
       </button>
-      <button class="btn btn-link">
+      <button @click="$emit('remove', todo)" class="btn btn-link">
         <span class="text-error">
           Remove
         </span>
