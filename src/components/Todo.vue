@@ -1,17 +1,20 @@
 <template>
-  <div class="tile flex-centered">
+  <div class="tile flex-centered" :class="{checked: todo.checked}">
     <div class="tile-icon">
-      <i class="icon icon-time"></i>
+      <i class="icon" :class="todo.checked ? 'icon-check i-green' : 'icon-time'"></i>
     </div>
     <div class="tile-content">
       <div class="tile-subtitle">{{ todo.description }}</div>
     </div>
     <div class="tile-action">
-      <button class="btn btn-link">
-        Done
+      <button @click="$emit('done', todo)" class="btn btn-link">
+        <span v-if="todo.checked">Undone</span>
+        <span v-else>Done</span>
       </button>
       <button class="btn btn-link">
-        <span class="text-error">Remove</span>
+        <span class="text-error">
+          Remove
+        </span>
       </button>
     </div>
   </div>
@@ -28,4 +31,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.checked {
+    color: lightgray;
+}
+.i-green {
+    color: green;
+}
+</style>
